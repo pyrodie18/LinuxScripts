@@ -2,13 +2,15 @@
 #  This is an automated BASH script to build an IPA server from a clean Centos 7.0 install.  It requires access to a functioning repo server.
 #  Written By:  Troy Ward
 #  Updated 2/21/18
-#  Version 1.0.1
+#  Version 1.0.2
 #
 # Change Log:
 #
 # 1.0.1  2/26/18
 #       Added additional commands to sudo groups
 #       Basic formatting updates
+# 1.0.2  2/27/18
+#       Added additional commands to sudo groups
 
 
 ChangeIP () {
@@ -186,36 +188,62 @@ ipa sudocmd-add /usr/bin/awk --desc="For editing files"
 ipa sudocmd-add /usr/bin/systemctl --desc="For starting/stoping services"
 ipa sudocmd-add /usr/sbin/service --desc="For starting/stopping services"
 ipa sudocmd-add /usr/sbin/shutdown --desc="Shutdown a system"
-ipa sudocmd-add /usr/sbin/reboot --desc="Reboot a system"
+ipa sudocmd-add /usr/sbin/restart --desc="Reboot a system"
 ipa sudocmd-add /usr/sbin/ifconfig --desc="Configure IP Address"
-#TCPdump
-#Bro
-#Surricata
+ipa sudocmd-add /sbin/tcpdump --desc="Packet Capture"
+ipa sudocmd-add /bin/bro --desc="Network Analysis"
+ipa sudocmd-add /sbin/suricata --desc="Network Analysis"
+ipa sudocmd-add /bin/broctl --desc="Network Analysis"
 #Snort
-#netsniff
+ipa sudocmd-add /sbin/netsniff-ng --desc="Packet Capture"
+#tcpdump
 #nmap
+#wireshark
+#virt-manager
+ipa sudocmd-add /bin/yum --desc="Package Manager"
+ipa sudocmd-add /bin/dnf --desc="Package Manager"
+ipa sudocmd-add /bin/chown --desc="File Permissions Manager"
+ipa sudocmd-add /bin/chmod --desc="File Permissions Manager"
+ipa sudocmd-add /bin/find --desc="Locate Files"
+ipa sudocmd-add /bin/locate --desc="Locate Files"
+ipa sudocmd-add /bin/updatedb --desc="Locate Files"
+ipa sudocmd-add /bin/nano --desc="For editing files"
+#emacs
+#gedit
+#netcat
+ipa sudocmd-add /bin/firewall-cmd --desc="Manage Firewall"
+ipa sudocmd-add /sbin/setenforce --desc="Manage SE Linux"
 
 
 #Add sudo groups
 ipa sudocmdgroup-add sgrp-view-files --desc="View files commands"
 ipa sudocmdgroup-add sgrp-edit-files --desc="Edit file commands"
+ipa sudocmdgroup-add sgrp-file-permissions --desc="Edit file permissions"
 ipa sudocmdgroup-add sgrp-system-restart --desc="System restart commands"
 ipa sudocmdgroup-add sgrp-services --desc="Commands to manage services"
 ipa sudocmdgroup-add sgrp-IDS --desc="IDS commands"
 ipa sudocmdgroup-add sgrp-packet-capture --desc="Packet Capture"
 ipa sudocmdgroup-add sgrp-enumeration --desc="Enumeration Tools"
+ipa sudocmdgroup-add sgrp-locate-files --desc="Tools to find files on OS"
+ipa sudocmdgroup-add sgrp-os-security --desc="Operating System Security"
+ipa sudocmdgroup-add sgrp-package-manager --desc="Package Managers"
+ipa sudocmdgroup-add sgrp-system-config --desc="System Configuration"
+ipa sudocmdgroup-add sgrp-enumeration --desc="Network Enumeration Tools"
+ipa sudocmdgroup-add sgrp-virtualization --desc="Virtualization Tools"
 
 #Put sudo commands in groups
-ipa sudocmdgroup-add-member sgrp-view-files --sudocmds "/usr/bin/less"
-ipa sudocmdgroup-add-member sgrp-view-files --sudocmds "/usr/bin/more"
-ipa sudocmdgroup-add-member sgrp-view-files --sudocmds "/usr/bin/cat"
-ipa sudocmdgroup-add-member sgrp-edit-files --sudocmds "/usr/bin/vim"
-ipa sudocmdgroup-add-member sgrp-edit-files --sudocmds "/usr/bin/vi"
-ipa sudocmdgroup-add-member sgrp-edit-files --sudocmds "/usr/bin/awk"
-ipa sudocmdgroup-add-member sgrp-system-restart --sudocmds "/usr/sbin/shutdown"
-ipa sudocmdgroup-add-member sgrp-system-restart --sudocmds "/usr/sbin/restart"
-ipa sudocmdgroup-add-member sgrp-services --sudocmds "/usr/bin/systemctl"
-ipa sudocmdgroup-add-member sgrp-services --sudocmds "/usr/bin/service"
+ipa sudocmdgroup-add-member sgrp-view-files --sudocmds "/usr/bin/less" --sudocmds "/usr/bin/more" --sudocmds "/usr/bin/cat"
+ipa sudocmdgroup-add-member sgrp-edit-files --sudocmds "/usr/bin/vim" --sudocmds "/usr/bin/vi" --sudocmds "/usr/bin/awk" --sudocmds "/bin/nano" #ADD EMACS #ADD GEDIT
+ipa sudocmdgroup-add-member sgrp-file-permissions --sudocmds "/bin/chown" --sudocmds "/bin/chmod"
+ipa sudocmdgroup-add-member sgrp-system-restart --sudocmds "/usr/sbin/shutdown" --sudocmds "/usr/sbin/restart"
+ipa sudocmdgroup-add-member sgrp-services --sudocmds "/usr/bin/systemctl" --sudocmds "/usr/bin/service"
+ipa sudocmdgroup-add-member sgrp-IDS --sudocmds "/sbin/suricata"  #Add snort
+ipa sudocmdgroup-add-member sgrp-locate-files --sudocmds "/bin/locate" --sudocmds "/bin/find" --sudocmds "/bin/updatedb"
+ipa sudocmdgroup-add-member sgrp-os-security --sudocmds "/bin/firewall-cmd" --sudocmds "/sbin/setenforce"
+ipa sudocmdgroup-add-member sgrp-package-manager --sudocmds "/bin/yum"  --sudocmds "/bin/dnf"
+ipa sudocmdgroup-add-member sgrp-system-config --sudocmds "/usr/sbin/ifconfig"
+ipa sudocmdgroup-add-member sgrp-enumeration --sudocmds "/sbin/tcpdump" --sudocmds "/bin/bro" --sudocmds "/bin/broctl" --sudocmds "/sbin/netsniff-ng" #ADD NMAP #ADD WIRESHARK #ADD NETCAT
+ipa sudocmdgroup-add-member sgrp-virtualization #ADD VIRT-MANAGER
 
 #Add sudo rules
 #Configure srule-analyst-laptop
