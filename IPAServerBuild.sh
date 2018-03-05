@@ -1,16 +1,17 @@
 #!/bin/bash -x
 #  This is an automated BASH script to build an IPA server from a clean Centos 7.0 install.  It requires access to a functioning repo server.
 #  Written By:  Troy Ward
-#  Updated 2/21/18
+#  Updated 2/27/18
 #  Version 1.0.2
 #
 # Change Log:
 #
+# 1.0.2  2/27/18
+#       Added additional commands to sudo groups
 # 1.0.1  2/26/18
 #       Added additional commands to sudo groups
 #       Basic formatting updates
-# 1.0.2  2/27/18
-#       Added additional commands to sudo groups
+
 
 
 ChangeIP () {
